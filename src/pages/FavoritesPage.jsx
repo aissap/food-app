@@ -1,28 +1,26 @@
-// src/pages/FavoritesPage.jsx
-import { Receipt } from 'lucide-react';
-import React from 'react';
-import ReceipCard from '../components/ReceipCard'; // Fixed import path
+import React, { useEffect, useState } from 'react';
+import RecipeCard from '../components/ReceipCard';
 
 const FavoritesPage = () => {
-  const fav = true;
+  const [favorites, setFavorites] = useState([]);
+
+  // Assuming you’re storing the favorite recipes in localStorage or some global state
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setFavorites(storedFavorites);
+  }, []);
+
   return (
-    <div className='bg-[#faf9fb]'>
-      <div className='max-w-screen-lg mx-auto'>
-        <p className='font-bold text-3xl md:text-5xl my-4'>My Favorites</p>
-
-        {!fav && (
-          <div className='h-[80vh] flex flex-col items-center gap-4'>
-            <img src="/404.svg" alt="No favorites found" className='h-3/4' />
-          </div>
-        )}
-
-        {fav && (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            <ReceipCard />
-            <ReceipCard />
-            <ReceipCard />
-            <ReceipCard />
-            <ReceipCard />
+    <div className="bg-[#faf9fb] p-10 flex-1">
+      <div className="max-w-screen-lg mx-auto">
+        <h1 className="font-bold text-3xl md:text-5xl mt-4">My Favorite Recipes</h1>
+        {favorites.length === 0 ? (
+          <p>No favorites added yet.</p>
+        ) : (
+          <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
+            {favorites.map((recipe, index) => (
+              <RecipeCard key={index} recipe={recipe} />
+            ))}
           </div>
         )}
       </div>
